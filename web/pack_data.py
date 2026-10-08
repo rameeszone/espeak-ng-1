@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 # Packs compiled eSpeak NG voice data for the RedZoc web tool.
 #   base.bin + base.json   shared files (phonemes, intonations, voice and variant files), one download
-#   dict/<name>_dict       one file per language dictionary, downloaded only when needed
+#   dict/<name>_dict.bin   one file per language dictionary, downloaded only when needed
+#                          (".bin" so web servers treat it as a file, not a folder)
 #   voices.json            the voices that can actually speak (their dictionary exists)
 # Copyright (C) 2026 Ramees Muhammed (RedZoc). GPL-3.0-or-later.
 import json
@@ -22,7 +23,7 @@ for root, dirs, files in os.walk(data):
         if name in SKIP:
             continue
         if name.endswith("_dict"):
-            shutil.copyfile(path, os.path.join(out, "dict", name))
+            shutil.copyfile(path, os.path.join(out, "dict", name + ".bin"))
             continue
         blob = open(path, "rb").read()
         base.append({"path": rel, "offset": offset, "size": len(blob)})
@@ -34,7 +35,7 @@ with open(os.path.join(out, "base.bin"), "wb") as f:
 with open(os.path.join(out, "base.json"), "w") as f:
     json.dump(base, f, separators=(",", ":"))
 
-dicts = {n[:-5] for n in os.listdir(os.path.join(out, "dict"))}
+dicts = {n[:-len("_dict.bin")] for n in os.listdir(os.path.join(out, "dict"))}
 voices = []
 for entry in base:
     if not entry["path"].startswith("lang/"):

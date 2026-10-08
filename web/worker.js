@@ -42,7 +42,7 @@ var ready = Promise.all([
 
 function loadDict(name) {
   if (loadedDicts[name]) return loadedDicts[name];
-  loadedDicts[name] = fetchOk("dict/" + name + "_dict", "bin").then(function (bytes) {
+  loadedDicts[name] = fetchOk("dict/" + name + "_dict.bin", "bin").then(function (bytes) {
     writeFile(DATA_ROOT + "/espeak-ng-data/" + name + "_dict", new Uint8Array(bytes));
   }).catch(function (error) {
     delete loadedDicts[name];

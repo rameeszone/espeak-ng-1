@@ -25,5 +25,5 @@ docker run --rm -v "$PWD:/src:ro" -v "$PWD/web-out:/out" emscripten/emsdk:latest
 ```
 
 Output in `web-out/`: `espeakng.js`, `espeakng.wasm`, `base.bin`, `base.json`, `voices.json`,
-`dict/*_dict`, and `SOURCE.txt` with the exact source commit. Serve them with `worker.js`
+`dict/*_dict.bin`, and `SOURCE.txt` with the exact source commit. Serve them with `worker.js`
 in one folder, and `try.js` from the page.
