@@ -5,7 +5,7 @@
 (function () {
   "use strict";
 
-  var ENGINE = "engine/";
+  var ENGINE = "/espeak/try/engine/";
   var LIMIT = 5000;
   var STORE = "redzoc-try-espeak";
 
@@ -87,7 +87,9 @@
       });
       language.appendChild(group);
     });
-    language.value = saved.language && voices[saved.language] ? saved.language : guessLanguage();
+    var preset = language.getAttribute("data-preset");
+    language.value = preset && voices[preset] ? preset
+      : (saved.language && voices[saved.language] ? saved.language : guessLanguage());
     language.disabled = false;
   }
 
@@ -137,6 +139,7 @@
     var id = ++jobId;
     return new Promise(function (resolve, reject) {
       pending[id] = function (result) {
+        if (result.fatal && worker) { worker.terminate(); worker = null; pending = {}; }
         if (result.error) return reject(new Error(result.error));
         if (cache.url) URL.revokeObjectURL(cache.url);
         cache.key = key;
@@ -245,6 +248,15 @@
     var unit = input === rate ? " words per minute" : " percent";
     input.setAttribute("aria-valuetext", input.value + unit);
     $(input.id + "-value").textContent = input === rate ? input.value + " wpm" : input.value + "%";
+  }
+
+  var sample = $("tts-sample");
+  if (sample) {
+    sample.addEventListener("click", function () {
+      text.value = sample.getAttribute("data-sample");
+      updateCount();
+      announce("Sample text added. Press Play to hear it.");
+    });
   }
 
   text.addEventListener("input", updateCount);
