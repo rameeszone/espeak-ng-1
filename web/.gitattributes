@@ -1,0 +1,2 @@
+# build.sh runs inside a Linux container: always LF.
+*.sh text eol=lf
