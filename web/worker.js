@@ -41,16 +41,6 @@ var ready = Promise.all([
   if (sampleRate <= 0) throw new Error("The speech engine could not start.");
 });
 
-// Text fixes for engine bugs that are not yet fixed upstream.
-function prepare(text, voice) {
-  if (voice === "as") {
-    // Assamese: precomposed RRA/RHA (U+09DC, U+09DD) crash the engine; decomposed YYA is misread.
-    text = text.replace(/ড়/g, "ড়").replace(/ঢ়/g, "ঢ়")
-               .replace(/য়/g, "য়");
-  }
-  return text;
-}
-
 function loadDict(name) {
   if (loadedDicts[name]) return loadedDicts[name];
   loadedDicts[name] = fetchOk("dict/" + name + "_dict.bin", "bin").then(function (bytes) {
@@ -74,7 +64,7 @@ self.onmessage = function (event) {
     engine.ccall("rz_set_parameter", "number", ["number", "number"], [1, job.rate]);
     engine.ccall("rz_set_parameter", "number", ["number", "number"], [2, job.volume]);
     engine.ccall("rz_set_parameter", "number", ["number", "number"], [3, job.pitch]);
-    var count = engine.ccall("rz_synth", "number", ["string"], [prepare(job.text, job.voice)]);
+    var count = engine.ccall("rz_synth", "number", ["string"], [job.text]);
     if (count < 0) throw new Error("Speech could not be generated.");
     var pointer = engine.ccall("rz_samples", "number", [], []);
     var samples = new Int16Array(engine.HEAP16.buffer, pointer, count).slice();
