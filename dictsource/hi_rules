@@ -11,6 +11,9 @@
 // ?2   use diphthong for "ai"
 // ?3   use diphthong for "au"
 
+// stop consonants (क to म): an anusvara before them is the nasal of the same row
+.L01 क ख ग घ ङ च छ ज झ ञ ट ठ ड ढ ण त थ द ध न प फ ब भ म
+
 
 .replace
  ०	0
@@ -49,6 +52,8 @@
         इ          I
 //       इँ        i~
         इं        i~
+        इ (ंL01    I         // इंद्र, इंच: as इन्द्र, इञ्च
+        इ (ंस      I         // इंसान: as इन्सान
 
 .group ई
         ई          i:
@@ -127,6 +132,8 @@ C)        ां         a~
 C)        ि          I
 C)//      िँ       i~
 C)        िं       i~
+C)        ि (ंL01    I         // हिंदी, चिंता: as हिन्दी, चिन्ता
+C)        ि (ंस      I         // हिंसा: as हिन्सा
 
 .group ी
 ी	#X2i:
@@ -141,6 +148,8 @@ C)        ीं         i~
 C)        ु          U
 C)        ु (ँ       u~
 C)        ुं         u~
+C)        ु (ंL01    U         // कुंजी, मुंबई: as कुञ्जी, मुम्बई
+C)        ु (ंस      U         // पुंसवन: as पुन्सवन
 C)        ुँ (_      u~
 
 .group ू
