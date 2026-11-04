@@ -44,6 +44,7 @@
 .group आ
         आ          a:
         आं          a~
+        आँ          a~        // + candrabindu (आँख)
 
 .group इ
         इ          I
@@ -60,6 +61,7 @@
 .group ऊ
         ऊ          u
         ऊं          u~        // + anusvara
+        ऊँ          u~        // + candrabindu (ऊँचा)
         ऊँ (_       u~        // + candrabinbu
 
 .group ऋ
@@ -85,6 +87,7 @@
 .group ऐ
         ऐ          E:        // ?? [aI] [E:] [&:]
         ऐं          E~
+        ऐँ          E~
         ऐँ (_       E~
 ?2      ऐ          aI        // ?? [aI] [E:] [&:]
 
@@ -100,6 +103,7 @@
 .group ओ
         ओ          o:
         ओं          o~        // +anusvara
+        ओँ          o~        // +candrabindu
         ओँ (_       o~        // +candrabindu
     ा) ओं (_       w        // +anusvara
     ा) ओँ (_       w
@@ -108,6 +112,7 @@
 .group औ
         औ          O:        // ?? [aU] [O:]
         औं          O~        // +anusvara
+        औँ          O~        // +candrabindu
         औँ (_       O~        // +candrabindu
 ?3      औ          aU        // ?? [aU] [O:]
 
@@ -117,7 +122,7 @@
 .group ा
 ा	#X2a:
    C) ा      a:
-C)        ा (ँ       a~
+C)        ाँ         a~
 C)        ाँ (_      a~
 C)        ां         a~
 
@@ -132,21 +137,21 @@ C)        िं       i~
 ी	#X2i:
 C)        ी          i:
 C)        ी (_       i
-C)        ी (ँ       i~
+C)        ीँ         i~
 C)        ीँ (_      i~
 C)        ीं         i~
 
 .group ु
 ु	#X1U
 C)        ु          U
-C)        ु (ँ       u~
+C)        ुँ         u~
 C)        ुं         u~
 C)        ुँ (_      u~
 
 .group ू
 ू	#X2u:
 C)        ू          u:
-C)        ू (ँ       u~
+C)        ूँ         u~
 C)        ूं         u~        // or O~   ??
 C)        ूँ (_      u~
 
@@ -165,14 +170,14 @@ C)        ॅ          E
 .group ॆ
 ॆ	#X1e
 C)        ॆ          e
-C)        ॆ (ँ       e~
+C)        ॆँ         e~
 C)        ॆं         e~
 C)        ॆँ (_      e~
 
 .group े
 े	#X2e:
 C)        े          e:
-C)        े (ँ       e~
+C)        ेँ         e~
 C)        ें         e~:
 C)        ेँ (_      e~:
 
@@ -180,7 +185,7 @@ C)        ेँ (_      e~:
 ै	#X2E:
 C)        ै          E:        // ?? [aI] [E:] [&:]
 C)        ैं         E~ 
-C)        ै (ँ       E~ 
+C)        ैँ         E~ 
 C)        ैं         E~
 C)        ैँ (_      E~
 ?2 ै	#X2aI
@@ -193,21 +198,21 @@ C)        ॉ          O
 .group ॊ
 ॊ	#X1o
 C)        ॊ          o
-C)        ॊ (ँ       o~
+C)        ॊँ         o~
 C)        ॊं         o~
 C)        ॊँ (_      o~
 
 .group ो
 ो	#X2o:
 C)        ो          o:
-C)        ो (ँ       o~
+C)        ोँ         o~
 C)        ों         o~
 C)        ोँ (_      o~
 
 .group ौ
 ौ	#X2O:
 C)        ौ          O:        //  [O:] or [aU] ??
-C)        ौ (ँ       O~        //  [O:] or [aU] ??
+C)        ौँ         O~        //  [O:] or [aU] ??
 C)        ौं         O~
 C)        ौँ (_      O~
 ?3 ौ 	#X2aU
