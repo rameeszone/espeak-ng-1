@@ -99,9 +99,9 @@
 
 .group ओ
         ओ          o:
-        ओं          o~        // +anusvara
+        ओं          o~:        // +anusvara (long, as एं)
         ओँ (_       o~        // +candrabindu
-    ा) ओं (_       w        // +anusvara
+    ा) ओं (_       o~:        // +anusvara (keeps the nasal: भाषाओं)
     ा) ओँ (_       w
     
 
@@ -201,7 +201,7 @@ C)        ॊँ (_      o~
 ो	#X2o:
 C)        ो          o:
 C)        ो (ँ       o~
-C)        ों         o~
+C)        ों         o~:
 C)        ोँ (_      o~
 
 .group ौ
