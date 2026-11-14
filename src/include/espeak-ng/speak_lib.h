@@ -480,6 +480,15 @@ ESPEAK_API int espeak_GetParameter(espeak_PARAMETER parameter, int current);
 extern "C"
 #endif
 ESPEAK_API espeak_ERROR espeak_SetPunctuationList(const wchar_t *punctlist);
+
+#ifdef __cplusplus
+extern "C"
+#endif
+ESPEAK_API void espeak_SetDevanagariLanguage(const char *language);
+/* RedZoc addition (November 2026). The language for Devanagari words in a voice
+   that does not use Devanagari (for example "mr" or "ne"; NULL or "" for the
+   default, Hindi). Voices that use Devanagari are not affected.
+*/
 /* Specified a list of punctuation characters whose names are to be spoken when the
    value of the Punctuation parameter is set to "some".
 

@@ -41,12 +41,15 @@
 
 .group अ
         अ          V
-        अ (ह       E         //  (h
+        अ (हC      E         //  (h: ऍ only when ह has no vowel of its own (अहसास)
+        अ (ह_      E
+        अ (हं      V         // अहंकार: ं counts as a consonant in C
     अह) अ          E
 
 .group आ
         आ          a:
         आं          a~
+        आँ          a~        // + candrabindu (आँख)
 
 .group इ
         इ          I
@@ -65,6 +68,7 @@
 .group ऊ
         ऊ          u
         ऊं          u~        // + anusvara
+        ऊँ          u~        // + candrabindu (ऊँचा)
         ऊँ (_       u~        // + candrabinbu
 
 .group ऋ
@@ -88,11 +92,11 @@
         ए          e:
         एँ          e~:
         एं          e~:
-    ा) एँ (_       j
 
 .group ऐ
         ऐ          E:        // ?? [aI] [E:] [&:]
         ऐं          E~
+        ऐँ          E~
         ऐँ (_       E~
 ?2      ऐ          aI        // ?? [aI] [E:] [&:]
 
@@ -107,15 +111,17 @@
 
 .group ओ
         ओ          o:
-        ओं          o~        // +anusvara
+        ओं          o~:        // +anusvara (long, as एं)
+        ओँ          o~        // +candrabindu
         ओँ (_       o~        // +candrabindu
-    ा) ओं (_       w        // +anusvara
+    ा) ओं (_       o~:        // +anusvara (keeps the nasal: भाषाओं)
     ा) ओँ (_       w
     
 
 .group औ
         औ          O:        // ?? [aU] [O:]
         औं          O~        // +anusvara
+        औँ          O~        // +candrabindu
         औँ (_       O~        // +candrabindu
 ?3      औ          aU        // ?? [aU] [O:]
 
@@ -125,7 +131,7 @@
 .group ा
 ा	#X2a:
    C) ा      a:
-C)        ा (ँ       a~
+C)        ाँ         a~
 C)        ाँ (_      a~
 C)        ां         a~
 
@@ -137,28 +143,34 @@ C)//      िँ       i~
 C)        िं       i~
 C)        ि (ंL01    I         // हिंदी, चिंता: as हिन्दी, चिन्ता
 C)        ि (ंस      I         // हिंसा: as हिन्सा
+ख)       िं (च      ,In^      // खिंचाव, खिंचवाना, खिंची: ञ (a Hindi tester, November 2026)
 
 .group ी
 ी	#X2i:
 C)        ी          i:
+C)        ी (ंद्र    i:        // रवींद्र: as रवीन्द्र
 C)        ी (_       i
-C)        ी (ँ       i~
+C)        ीँ         i~
 C)        ीँ (_      i~
 C)        ीं         i~
 
 .group ु
 ु	#X1U
 C)        ु          U
-C)        ु (ँ       u~
+C)        ुँ         u~
 C)        ुं         u~
 C)        ु (ंL01    U         // कुंजी, मुंबई: as कुञ्जी, मुम्बई
 C)        ु (ंस      U         // पुंसवन: as पुन्सवन
+पह)      ुं (च      'U~       // पहुंच, पहुंचना: a light nasal vowel (as पहुँच)
+C)        ुं (गा_    u~        // मिलुंगा, डालुंगा: as मिलूँगा
+C)        ुं (गी_    u~
+C)        ुं (गे_    u~
 C)        ुँ (_      u~
 
 .group ू
 ू	#X2u:
 C)        ू          u:
-C)        ू (ँ       u~
+C)        ूँ         u~
 C)        ूं         u~        // or O~   ??
 C)        ूँ (_      u~
 
@@ -177,14 +189,15 @@ C)        ॅ          E
 .group ॆ
 ॆ	#X1e
 C)        ॆ          e
-C)        ॆ (ँ       e~
+C)        ॆँ         e~
 C)        ॆं         e~
 C)        ॆँ (_      e~
 
 .group े
 े	#X2e:
 C)        े          e:
-C)        े (ँ       e~
+C)        े (ंद्र    e:        // केंद्र, महेंद्र: as केन्द्र, महेन्द्र
+C)        ेँ         e~
 C)        ें         e~:
 C)        ेँ (_      e~:
 
@@ -192,7 +205,7 @@ C)        ेँ (_      e~:
 ै	#X2E:
 C)        ै          E:        // ?? [aI] [E:] [&:]
 C)        ैं         E~ 
-C)        ै (ँ       E~ 
+C)        ैँ         E~ 
 C)        ैं         E~
 C)        ैँ (_      E~
 ?2 ै	#X2aI
@@ -205,21 +218,21 @@ C)        ॉ          O
 .group ॊ
 ॊ	#X1o
 C)        ॊ          o
-C)        ॊ (ँ       o~
+C)        ॊँ         o~
 C)        ॊं         o~
 C)        ॊँ (_      o~
 
 .group ो
 ो	#X2o:
 C)        ो          o:
-C)        ो (ँ       o~
-C)        ों         o~
+C)        ोँ         o~
+C)        ों         o~:
 C)        ोँ (_      o~
 
 .group ौ
 ौ	#X2O:
 C)        ौ          O:        //  [O:] or [aU] ??
-C)        ौ (ँ       O~        //  [O:] or [aU] ??
+C)        ौँ         O~        //  [O:] or [aU] ??
 C)        ौं         O~
 C)        ौँ (_      O~
 ?3 ौ 	#X2aU
@@ -278,6 +291,7 @@ C)        ॣ          l-:
 .group च
         च          cV
         च (B       c
+     खिं) च (C       c         // खिंचवाना, खिंचना: no short a after ञ्च
         च (्य      c:
 
 //New

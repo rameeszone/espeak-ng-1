@@ -409,3 +409,79 @@ $	dOl@r
 ौ	औ की मात्रा	$text
 ॉ	ऑ की मात्रा	$text
 ्	हलंत	$text
+
+// Short "a" kept before consonant clusters (नमस्कार, पुरस्कार, राजस्थान...), word by word.
+// Checked by a Hindi tester, November 2026.
+अलंकार	,Vl@Nk'a:r
+अलंकारों	,Vl@Nk'a:*o~:
+नमस्कार	n,@m@sk'a:r
+पुरस्कार	p,Ur@2sk'a:r
+पुरस्कारों	p,Ur@2sk'a:*o~:
+तिरस्कार	t,Ir@2sk'a:r
+राजस्थान	r,a:J@3st#'a:n
+समस्याएं	s,@m@sj'a:e~:
+समस्याएँ	s,@m@sj'a:e~:
+समस्याओं	s,@m@sj'a:o~:
+गिरफ्तार	g,I*@p#t'a:r
+पसंदीदा	p,@s@nd'i:da:
+गिरफ़्तार	g,Ir@2ft'a:r
+गिरफ़्तार	g,Ir@2ft'a:r
+अनुसंधान	,VnUs@nd#'a:n
+चमत्कार	c,@m@tk'a:r
+कार्यकर्ता	k'a:rj@3k,@*ta:
+गिरफ़्तारी	g,Ir@2ft'a:*i
+गिरफ़्तारी	g,Ir@2ft'a:*i
+कार्यकर्ताओं	k'a:rj@3k,@*ta:,o~:
+पुनर्निर्माण	p,Un@rnIrm'a:n.
+गिरफ्तारी	g,I*@p#t'a:*i
+पुनर्विचार	p,Un@rvIc'a:r
+स्वयंसेवक	sv,@j@3ns'e:v@k
+सुरक्षात्मक	s,U*@kS'a:tm@k
+सर्वशक्तिमान	s,@rv@S,@ktIm'a:n
+चमत्कारी	c,@m@tk'a:*i
+शोधकर्ताओं	S,o:d#@k@*t'a:o~:
+असंतोष	,Vs@nt'o:s.
+पुनर्जीवित	p,Un@*J'i:vIt
+पुनर्वास	p,Un@rv'a:s
+इमर्जेंसी	,Im@*J'e~:si
+नरसंहार	n,@r@2s@nH'a:r
+भूकंपीय	b#,u:k@mp'i:j
+निरस्त्रीकरण	n,Ir@2str'i:k@r,@2n.
+गिरफ़्तारियाँ	g,Ir@2ft'a:*Ij,a~
+गिरफ़्तारियाँ	g,Ir@2ft'a:*Ij,a~
+जांचकर्ताओं	J,a~c@k@*t'a:o~:
+पुनर्स्थापित	p,Un@rst#'a:pIt
+स्वयंसेवकों	sv,@j@3ns'e:vk,o~:
+पुनर्वित्त	p,Un@rv'It:
+चमत्कारिक	c,@m@tk'a:*Ik
+अपंजीकृत	,Vp@n^J'i:krIt
+आत्मरक्षा	'a:tm@*,@kSa:
+उपन्यास	,Up@nj'a:s
+असंतुष्ट	,Vs@nt'Us.t.
+अनुसन्धान	,VnUs@nd#'a:n
+चिरस्थायी	c,Ir@2st#'a:ji
+निकम्मेपन	n,Ik@mm'e:p@n
+पूर्ववर्ती	p'u:rv@v,@*ti
+अकस्मात	,Vk@sm'a:t
+साक्षात्कारकर्ता	sa:kS'a:tka:*,@k@*t,a:
+असंवेदनशील	,Vs@nv,e:d@nS'i:l
+असंवैधानिक	,Vs@nvE:d#'a:nIk
+समस्थानिक	s,@m@st#'a:nIk
+चिरंजीवी	c,Ir@2n^J'i:vi
+आत्मसंतुष्ट	'a:tm@s,@ntUs.t.
+नामंजूर	n,a:m@n^J'u:r
+सुरक्षाघरों	s,U*@kS'a:g#@r,o~:
+उष्णकटिबंधीय	,Us.n.@k@t.Ib@nd#'i:j
+पुनर्निर्धारित	p,Un@rnI*d#'a:*It
+पुनर्निर्वाचन	p,Un@rnIrv'a:c@n
+सुरक्षाबल	s,U*@kS'a:b@l
+असम्मान	,Vs@mm'a:n
+नामंजूरी	n,a:m@n^J'u:*i
+आपूर्तिकर्ताओं	a:p'u:*tIk,@*ta:,o~:
+वाद्यसंगीत	v'a:dj@3s,@Ngit
+गुणवत्तापूर्ण	g,Un.@v@t:a:p'u:rn.@-
+गुणवत्तायुक्त	g,Un.@v@t:a:j'Ukt
+
+// खिंच-: ञ, as a Hindi tester chose (Version 3, November 2026); the rule above covers the other forms.
+खिंचना	k#'In^cn,a:
+खिंचाव	k#In^c'a:v

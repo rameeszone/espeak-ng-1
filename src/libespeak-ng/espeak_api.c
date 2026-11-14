@@ -31,6 +31,7 @@
 
 #include "synthesize.h"           // for espeakINITIALIZE_PHONEME_IPA
 #include "translate.h"            // for dictionary_name, option_phoneme_events
+#include "dictionary.h"           // for SetDevanagariLanguage (RedZoc)
 
 static espeak_ERROR status_to_espeak_error(espeak_ng_STATUS status)
 {
@@ -113,6 +114,11 @@ ESPEAK_API espeak_ERROR espeak_Char(wchar_t character)
 ESPEAK_API espeak_ERROR espeak_SetParameter(espeak_PARAMETER parameter, int value, int relative)
 {
 	return status_to_espeak_error(espeak_ng_SetParameter(parameter, value, relative));
+}
+
+ESPEAK_API void espeak_SetDevanagariLanguage(const char *language)
+{
+	SetDevanagariLanguage(language);
 }
 
 ESPEAK_API espeak_ERROR espeak_SetPunctuationList(const wchar_t *punctlist)

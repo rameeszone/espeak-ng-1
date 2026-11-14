@@ -76,7 +76,7 @@ static int TranslateLetter(Translator *tr, char *word, char *phonemes, int contr
 static int Unpronouncable(Translator *tr, char *word, int posn);
 static int Unpronouncable2(Translator *tr, char *word);
 
-int TranslateWord3(Translator *tr, char *word_start, WORD_TAB *wtab, char *word_out, bool *any_stressed_words, ALPHABET *current_alphabet, char word_phonemes[], size_t size_word_phonemes)
+int TranslateWord3(Translator *tr, char *word_start, WORD_TAB *wtab, int wtab_remaining, char *word_out, bool *any_stressed_words, ALPHABET *current_alphabet, char word_phonemes[], size_t size_word_phonemes)
 {
 	// word1 is terminated by space (0x20) character
 
@@ -122,6 +122,7 @@ int TranslateWord3(Translator *tr, char *word_start, WORD_TAB *wtab, char *word_
 	if (wtab == NULL) {
 		memset(wtab_null, 0, sizeof(wtab_null));
 		wtab = wtab_null;
+		wtab_remaining = 0;
 	}
 	wflags = wtab->flags;
 
@@ -180,7 +181,7 @@ int TranslateWord3(Translator *tr, char *word_start, WORD_TAB *wtab, char *word_
 			// is there a translation for this keyname ?
 			word1--;
 			*word1 = '_'; // prefix keyname with '_'
-			found = LookupDictList(tr, &word1, phonemes, dictionary_flags, 0, wtab);
+			found = LookupDictList(tr, &word1, phonemes, dictionary_flags, 0, wtab, wtab_remaining);
 		}
 	}
 
@@ -191,7 +192,7 @@ int TranslateWord3(Translator *tr, char *word_start, WORD_TAB *wtab, char *word_
 		spell_word = option_sayas & 0xf; // 2,3,4
 	} else {
 		if (!found)
-			found = LookupDictList(tr, &word1, phonemes, dictionary_flags, FLAG_ALLOW_TEXTMODE, wtab);   // the original word
+			found = LookupDictList(tr, &word1, phonemes, dictionary_flags, FLAG_ALLOW_TEXTMODE, wtab, wtab_remaining);   // the original word
 
 		if ((dictionary_flags[0] & (FLAG_ALLOW_DOT | FLAG_NEEDS_DOT)) && (wordx[1] == '.'))
 			wordx[1] = ' '; // remove a Dot after this word
@@ -247,16 +248,16 @@ int TranslateWord3(Translator *tr, char *word_start, WORD_TAB *wtab, char *word_
 				return 0;
 			}
 
-			found = TranslateNumber(tr, word1, phonemes, phonemes + sizeof(phonemes), dictionary_flags, wtab, 0);
+			found = TranslateNumber(tr, word1, phonemes, phonemes + sizeof(phonemes), dictionary_flags, wtab, wtab_remaining, 0);
 		}
 
 		if (!found && ((wflags & FLAG_UPPERS) != FLAG_FIRST_UPPER)) {
 			// either all upper or all lower case
 
 			if ((tr->langopts.numbers & NUM_ROMAN) || ((tr->langopts.numbers & NUM_ROMAN_CAPITALS) && (wflags & FLAG_ALL_UPPER))) {
-				if ((wflags & FLAG_LAST_WORD) || !(wtab[1].flags & FLAG_NOSPACE)) {
+				if ((wflags & FLAG_LAST_WORD) || (wtab_remaining <= 1) || !(wtab[1].flags & FLAG_NOSPACE)) {
 					// don't use Roman number if this word is not separated from the next word (eg. "XLTest")
-					if ((found = TranslateRoman(tr, word1, phonemes, phonemes + sizeof(phonemes), wtab)) != 0)
+					if ((found = TranslateRoman(tr, word1, phonemes, phonemes + sizeof(phonemes), wtab, wtab_remaining)) != 0)
 						dictionary_flags[0] |= FLAG_ABBREV; // prevent emphasis if capitals
 				}
 			}
@@ -432,19 +433,22 @@ int TranslateWord3(Translator *tr, char *word_start, WORD_TAB *wtab, char *word_
 					strcpy(prefix_phonemes, phonemes);
 
 					// look for stress marker or $abbrev
-					found = LookupDictList(tr, &wordpf, phonemes, dictionary_flags, 0, wtab);
+					found = LookupDictList(tr, &wordpf, phonemes, dictionary_flags, 0, wtab, wtab_remaining);
 					if (found)
 						strcpy(prefix_phonemes, phonemes);
 					if (dictionary_flags[0] & FLAG_ABBREV) {
 						prefix_phonemes[0] = 0;
 						SpeakIndividualLetters(tr, wordpf, prefix_phonemes, 1, current_alphabet, word_phonemes);
 					}
-				} else
-					strcat(prefix_phonemes, end_phonemes);
+				} else {
+					// this loop runs up to 50 times, so truncate rather than
+					// overflow prefix_phonemes
+					strncat(prefix_phonemes, end_phonemes, N_WORD_PHONEMES - strlen(prefix_phonemes) - 1);
+				}
 				end_phonemes[0] = 0;
 
 				end_type = 0;
-				found = LookupDictList(tr, &wordx, phonemes, dictionary_flags2, SUFX_P, wtab); // without prefix
+				found = LookupDictList(tr, &wordx, phonemes, dictionary_flags2, SUFX_P, wtab, wtab_remaining); // without prefix
 				if (dictionary_flags[0] == 0) {
 					dictionary_flags[0] = dictionary_flags2[0];
 					dictionary_flags[1] = dictionary_flags2[1];
@@ -477,7 +481,7 @@ int TranslateWord3(Translator *tr, char *word_start, WORD_TAB *wtab, char *word_
 					if (prefix_phonemes[0] != 0) {
 						// lookup the stem without the prefix removed
 						wordx[-1] = c_temp;
-						found = LookupDictList(tr, &word1, phonemes, dictionary_flags2, end_flags, wtab);  // include prefix, but not suffix
+						found = LookupDictList(tr, &word1, phonemes, dictionary_flags2, end_flags, wtab, wtab_remaining);  // include prefix, but not suffix
 						wordx[-1] = ' ';
 						if (phonemes[0] == phonSWITCH) {
 							// change to another language in order to translate this word
@@ -496,7 +500,7 @@ int TranslateWord3(Translator *tr, char *word_start, WORD_TAB *wtab, char *word_
 							prefix_flags = 1;
 					}
 					if (found == false) {
-						found = LookupDictList(tr, &wordx, phonemes, dictionary_flags2, end_flags, wtab);  // without prefix and suffix
+						found = LookupDictList(tr, &wordx, phonemes, dictionary_flags2, end_flags, wtab, wtab_remaining);  // without prefix and suffix
 						if (phonemes[0] == phonSWITCH) {
 							// change to another language in order to translate this word
 							memcpy(wordx, word_copy, strlen(word_copy));
@@ -523,7 +527,10 @@ int TranslateWord3(Translator *tr, char *word_start, WORD_TAB *wtab, char *word_
 								// allow more suffixes before this suffix
 								strcpy(end_phonemes2, end_phonemes);
 								end_type = TranslateRules(tr, wordx, phonemes, N_WORD_PHONEMES, end_phonemes, wflags, dictionary_flags);
-								strcat(end_phonemes, end_phonemes2); // add the phonemes for the previous suffixes after this one
+								// add the phonemes for the previous suffixes after this one.
+								// A word can carry any number of suffixes (e.g. "s's's'..."), so
+								// truncate rather than overflow end_phonemes.
+								strncat(end_phonemes, end_phonemes2, N_WORD_PHONEMES - strlen(end_phonemes) - 1);
 
 								if ((end_type != 0) && !(end_type & SUFX_P)) {
 									// there is another suffix
@@ -628,7 +635,7 @@ int TranslateWord3(Translator *tr, char *word_start, WORD_TAB *wtab, char *word_
 
 		if (wflags & FLAG_EMPHASIZED)
 			dictionary_flags[0] |= FLAG_PAUSE1; // precede by short pause
-	} else if (wtab[dictionary_skipwords].flags & FLAG_LAST_WORD) {
+	} else if ((dictionary_skipwords < wtab_remaining) && (wtab[dictionary_skipwords].flags & FLAG_LAST_WORD)) {
 		// the word has attribute to stress or unstress when at end of clause
 		if (dictionary_flags[0] & (FLAG_STRESS_END | FLAG_STRESS_END2))
 			ChangeWordStress(tr, word_phonemes, 4);
@@ -933,8 +940,11 @@ static int TranslateLetter(Translator *tr, char *word, char *phonemes, int contr
 		int language;
 		if ((al_offset != 0) && (al_offset == translator->langopts.alt_alphabet))
 			language = translator->langopts.alt_alphabet_lang;
-		else if ((alphabet != NULL) && (alphabet->language != 0) && !(al_flags & AL_NOT_LETTERS))
+		else if ((alphabet != NULL) && (alphabet->language != 0) && !(al_flags & AL_NOT_LETTERS)) {
 			language = alphabet->language;
+			if (alphabet->offset == 0x900)
+				language = DevanagariScriptLanguage(language);
+		}
 		else
 			language = L('e', 'n');
 
@@ -1098,6 +1108,9 @@ static int CheckDottedAbbrev(char *word1)
 
 		if (ok == 0)
 			break;
+
+		if ((nbytes <= 0) || ((size_t)nbytes > sizeof(word_buf) - (size_t)(wbuf - word_buf)))
+			return 0;
 
 		for (ix = 0; ix < nbytes; ix++)
 			*wbuf++ = word[ix];

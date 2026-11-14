@@ -17,7 +17,7 @@ eSpeak NG is licensed under the GNU General Public License version 3 or later: s
 ## How the app builds it
 
 1. **Engine library:** the app's Gradle build runs CMake through the Android NDK on `android/jni/CMakeLists.txt`, with `-DUSE_ASYNC=OFF -DUSE_MBROLA=OFF`, target `ttsespeak`. This builds `libttsespeak.so` from `android/jni/jni/eSpeakService.c` and the eSpeak NG library in `src/`.
-2. **Voice data:** compiled from `dictsource/` and `phsource/` with eSpeak NG's own data build (`cmake -Bbuild -DENABLE_TESTS=OFF && cmake --build build --target data`) and packed into `espeakdata.zip`, which the app installs on the phone. Some files in the app's voice data are still unchanged from upstream eSpeak NG's 1.52.0 release; `DATA-SOURCES.txt` lists which files come from where.
+2. **Voice data:** compiled from `dictsource/` and `phsource/` with eSpeak NG's own data build (`cmake -Bbuild -DENABLE_TESTS=OFF && cmake --build build --target data`) and packed into `espeakdata.zip`, which the app installs on the phone. Some files in the app's voice data are built from upstream eSpeak NG's 1.52.0 release, or from a mix of its source and this branch's. `DATA-SOURCES.txt` lists where each file comes from, and `redzoc-data/build-data.sh` rebuilds them all from this branch and upstream's tag 1.52.0 (one file, `th_dict`, is unchanged from upstream's official 1.52.0 Android build).
 
 ## Contact
 

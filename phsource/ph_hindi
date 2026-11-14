@@ -247,7 +247,7 @@ endphoneme
 phoneme o~
   vwl lng starttype #o endtype #o
   length 220
-  FMT(vnasal/o_n)
+  FMT(vnasal/o_n6)  // o_n2 brighter, with a stronger nasal (chosen by a Hindi listener)
 endphoneme
 
 phoneme U~

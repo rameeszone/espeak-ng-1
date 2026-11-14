@@ -101,6 +101,29 @@ static const unsigned char remove_accent[N_REMOVE_ACCENT] = {
 // such letters keep the language of the previous Arabic-script word.
 static int arabic_script_language = L('a', 'r');
 
+// RedZoc (November 2026): the language for Devanagari words in a voice that
+// does not use Devanagari, set by the app from "Language for Devanagari
+// letters". 0 keeps the alphabet's own language (Hindi).
+static int devanagari_script_language = 0;
+
+void SetDevanagariLanguage(const char *language)
+{
+	int value = 0;
+	if (language != NULL) {
+		size_t len = strlen(language);
+		if (len == 2)
+			value = L(language[0], language[1]);
+		else if (len == 3)
+			value = L3(language[0], language[1], language[2]);
+	}
+	devanagari_script_language = value;
+}
+
+int DevanagariScriptLanguage(int language)
+{
+	return (devanagari_script_language != 0) ? devanagari_script_language : language;
+}
+
 static int ArabicScriptLanguage(const char *word)
 {
 	int c;
@@ -694,8 +717,11 @@ const char *GetTranslatedPhonemeString(int phoneme_mode)
 				// syllablic consonant
 				buf = WritePhMnemonic(buf, phoneme_tab[phonSYLLABIC], plist, use_ipa, NULL);
 			}
-			if (plist->tone_ph > 0)
-				buf = WritePhMnemonic(buf, phoneme_tab[plist->tone_ph], plist, use_ipa, NULL);
+			if (plist->tone_ph > 0) {
+				PHONEME_TAB *tone_ph = TonePhoneme(plist);
+				if (tone_ph != NULL)
+					buf = WritePhMnemonic(buf, tone_ph, plist, use_ipa, NULL);
+			}
 		}
 
 		len = buf - phon_buf;
@@ -1010,11 +1036,14 @@ void SetWordStress(Translator *tr, char *output, unsigned int *dictionary_flags,
 	// copy input string into internal buffer
 	for (ix = 0; ix < N_WORD_PHONEMES; ix++) {
 		phonetic[ix] = output[ix];
-		// check for unknown phoneme codes
-		if (phonetic[ix] >= n_phoneme_tab)
-			phonetic[ix] = phonSCHWA;
 		if (phonetic[ix] == 0)
 			break;
+		// check for unknown phoneme codes. A code may be out of range, or it may
+		// fall in a gap of the current table, in which case phoneme_tab holds NULL
+		// for it (see SelectPhonemeTable). The code below dereferences these
+		// entries unconditionally, so both cases must be substituted here.
+		if ((phonetic[ix] >= n_phoneme_tab) || (phoneme_tab[phonetic[ix]] == NULL))
+			phonetic[ix] = phonSCHWA;
 	}
 	if (ix == 0) return;
 	final_ph = phonetic[ix-1];
@@ -2299,6 +2328,8 @@ int TranslateRules(Translator *tr, char *p_start, char *phonemes, int ph_size, c
 								int language = alphabet->language;
 								if (alphabet->offset == 0x600)
 									language = ArabicScriptLanguage(p_start);
+								else if (alphabet->offset == 0x900)
+									language = DevanagariScriptLanguage(language);
 								sprintf(phonemes, "%c%s", phonSWITCH, WordToString2(word_buf, language));
 								return 0;
 							}
@@ -2471,7 +2502,7 @@ int TransposeAlphabet(Translator *tr, char *text)
     end_flags:  indicates whether this is a retranslation after removing a suffix
  */
 static const char *LookupDict2(Translator *tr, const char *word, const char *word2,
-                               char *phonetic, unsigned int *flags, int end_flags, WORD_TAB *wtab)
+                               char *phonetic, unsigned int *flags, int end_flags, WORD_TAB *wtab, int wtab_remaining)
 {
 	char *p;
 	char *next;
@@ -2569,7 +2600,7 @@ static const char *LookupDict2(Translator *tr, const char *word, const char *wor
 
 				// don't use the contraction if any of the words are emphasized
 				//  or has an embedded command, such as MARK
-				if (wtab != NULL) {
+				if ((wtab != NULL) && (wtab_remaining > skipwords)) {
 					for (ix = 0; ix <= skipwords && wtab[ix].length; ix++) {
 						if (wtab[ix].flags & FLAG_EMPHASIZED2)
 							condition_failed = true;
@@ -2760,7 +2791,7 @@ static const char *LookupDict2(Translator *tr, const char *word, const char *wor
 
    end_flags:  indicates if a suffix has been removed
  */
-int LookupDictList(Translator *tr, char **wordptr, char *ph_out, unsigned int *flags, int end_flags, WORD_TAB *wtab)
+int LookupDictList(Translator *tr, char **wordptr, char *ph_out, unsigned int *flags, int end_flags, WORD_TAB *wtab, int wtab_remaining)
 {
 	int length;
 	const char *found;
@@ -2780,7 +2811,7 @@ int LookupDictList(Translator *tr, char **wordptr, char *ph_out, unsigned int *f
 	while ((word2[nbytes = utf8_nbytes(word2)] == ' ') && (word2[nbytes+1] == '.')) {
 		// look for an abbreviation of the form a.b.c
 		// try removing the spaces between the dots and looking for a match
-		if (length + 1 > sizeof(word)) {
+		if ((nbytes <= 0) || ((size_t)nbytes + 1 > sizeof(word) - (size_t)length)) {
 			/* Too long abbreviation, leave as it is */
 			length = 0;
 			break;
@@ -2798,7 +2829,7 @@ int LookupDictList(Translator *tr, char **wordptr, char *ph_out, unsigned int *f
 		if (length + nbytes + 1 <= sizeof(word)) {
 			memcpy(&word[length], word2, nbytes);
 			word[length+nbytes] = 0;
-			found =  LookupDict2(tr, word, word2, ph_out, flags, end_flags, wtab);
+			found =  LookupDict2(tr, word, word2, ph_out, flags, end_flags, wtab, wtab_remaining);
 			if (found) {
 				// set the skip words flag
 				flags[0] |= FLAG_SKIPWORDS;
@@ -2819,7 +2850,7 @@ int LookupDictList(Translator *tr, char **wordptr, char *ph_out, unsigned int *f
 	}
 	word[length] = 0;
 
-	found = LookupDict2(tr, word, word1, ph_out, flags, end_flags, wtab);
+	found = LookupDict2(tr, word, word1, ph_out, flags, end_flags, wtab, wtab_remaining);
 
 	if (flags[0] & FLAG_MAX3) {
 		if (strcmp(ph_out, tr->phonemes_repeat) == 0) {
@@ -2850,11 +2881,11 @@ int LookupDictList(Translator *tr, char **wordptr, char *ph_out, unsigned int *f
 		if ((end_flags & FLAG_SUFX_E_ADDED) && (word[length-1] == 'e')) {
 			// try removing an 'e' which has been added by RemoveEnding
 			word[length-1] = 0;
-			found = LookupDict2(tr, word, word1, ph_out, flags, end_flags, wtab);
+			found = LookupDict2(tr, word, word1, ph_out, flags, end_flags, wtab, wtab_remaining);
 		} else if ((end_flags & SUFX_D) && (word[length-1] == word[length-2])) {
 			// try removing a double letter
 			word[length-1] = 0;
-			found = LookupDict2(tr, word, word1, ph_out, flags, end_flags, wtab);
+			found = LookupDict2(tr, word, word1, ph_out, flags, end_flags, wtab, wtab_remaining);
 		}
 	}
 
@@ -2906,7 +2937,7 @@ int Lookup(Translator *tr, const char *word, char *ph_out)
 
 	flags[0] = 0;
 	flags[1] = FLAG_LOOKUP_SYMBOL;
-	if ((flags0 = LookupDictList(tr, &word1, ph_out, flags, FLAG_ALLOW_TEXTMODE, NULL)) != 0)
+	if ((flags0 = LookupDictList(tr, &word1, ph_out, flags, FLAG_ALLOW_TEXTMODE, NULL, 0)) != 0)
 		flags0 = flags[0];
 
 	if (flags[0] & FLAG_TEXTMODE) {
@@ -2935,7 +2966,7 @@ static int LookupFlags(Translator *tr, const char *word, unsigned int flags_out[
 	char *word1 = (char *)word;
 
 	flags[0] = flags[1] = 0;
-	LookupDictList(tr, &word1, buf, flags, 0, NULL);
+	LookupDictList(tr, &word1, buf, flags, 0, NULL, 0);
 	flags_out[0] = flags[0];
 	flags_out[1] = flags[1];
 	return flags[0];

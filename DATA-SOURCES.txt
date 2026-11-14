@@ -1,0 +1,382 @@
+# Where each file of the app's voice data (espeakdata.zip) comes from, release 2.8.7
+#
+# Every file below is rebuilt byte for byte by redzoc-data/build-data.sh from this
+# branch and upstream eSpeak NG's tag 1.52.0 (https://github.com/espeak-ng/espeak-ng/tree/1.52.0).
+# Format: path <TAB> recipe. Recipes:
+#   this                     this branch's data build (cmake --target data)
+#   1.52.0                   upstream 1.52.0's data build
+#   1.52.0+hindi             1.52.0's data build with this branch's phsource/ph_hindi
+#                            and phsource/vnasal/o_n6 (the Hindi nasal o)
+#   dict compiler=A source=B the dictionary compiled by the espeak-ng program built
+#                            from A, from dictsource/ of B, against the phoneme data above
+#     emoji=this             ... with this branch's <lang>_emoji instead of B's
+#     emoji=redzoc-data      ... with redzoc-data/<lang>_emoji (B's emoji names plus only
+#                            the newer emoji, existing names unchanged)
+#     no-extra               ... without B's <lang>_extra
+#   upstream-android-1.52.0  unchanged from upstream's official 1.52.0 Android build
+#                            (its th_dict was compiled slightly differently from the tag)
+af_dict	dict compiler=this source=this
+am_dict	dict compiler=this source=this
+an_dict	dict compiler=this source=this
+ar_dict	dict compiler=this source=this
+as_dict	dict compiler=this source=this
+az_dict	dict compiler=this source=this
+ba_dict	dict compiler=this source=this
+be_dict	dict compiler=this source=this
+bg_dict	dict compiler=this source=this
+bn_dict	dict compiler=1.52.0 source=this
+bpy_dict	dict compiler=1.52.0 source=this
+bs_dict	dict compiler=this source=this
+ca_dict	dict compiler=this source=this
+chr_dict	dict compiler=this source=this
+cmn_dict	dict compiler=this source=this
+cs_dict	dict compiler=this source=this
+cv_dict	dict compiler=this source=this
+cy_dict	dict compiler=this source=this
+da_dict	dict compiler=1.52.0 source=this
+de_dict	dict compiler=this source=1.52.0 emoji=this
+el_dict	dict compiler=this source=this
+en_dict	dict compiler=this source=1.52.0 emoji=this
+eo_dict	dict compiler=this source=this
+es_dict	dict compiler=this source=1.52.0 emoji=this
+et_dict	dict compiler=this source=this
+eu_dict	dict compiler=this source=this
+fa_dict	dict compiler=this source=1.52.0 emoji=redzoc-data no-extra
+fi_dict	dict compiler=this source=this
+fr_dict	dict compiler=this source=1.52.0 emoji=this
+ga_dict	dict compiler=this source=this
+gd_dict	dict compiler=this source=this
+gn_dict	dict compiler=this source=this
+grc_dict	dict compiler=this source=this
+gu_dict	dict compiler=this source=this
+hak_dict	dict compiler=this source=this
+haw_dict	dict compiler=this source=this
+he_dict	dict compiler=1.52.0 source=1.52.0
+hi_dict	dict compiler=this source=this
+hr_dict	dict compiler=this source=this
+ht_dict	dict compiler=this source=this
+hu_dict	dict compiler=this source=1.52.0 emoji=this
+hy_dict	dict compiler=this source=this
+ia_dict	dict compiler=this source=this
+id_dict	dict compiler=this source=this
+intonations	1.52.0
+io_dict	dict compiler=this source=this
+is_dict	dict compiler=this source=this
+it_dict	dict compiler=this source=this
+ja_dict	dict compiler=1.52.0 source=this
+jbo_dict	dict compiler=this source=this
+ka_dict	dict compiler=this source=this
+kaa_dict	dict compiler=this source=this
+kk_dict	dict compiler=this source=this
+kl_dict	dict compiler=this source=this
+kn_dict	dict compiler=this source=this
+ko_dict	dict compiler=1.52.0 source=this
+kok_dict	dict compiler=1.52.0 source=this
+ku_dict	dict compiler=this source=this
+ky_dict	dict compiler=this source=this
+la_dict	dict compiler=this source=this
+lang/aav/vi	this
+lang/aav/vi-VN-x-central	this
+lang/aav/vi-VN-x-south	this
+lang/art/eo	this
+lang/art/ia	this
+lang/art/io	this
+lang/art/jbo	this
+lang/art/lfn	1.52.0
+lang/art/piqd	this
+lang/art/py	this
+lang/art/qdb	this
+lang/art/qya	this
+lang/art/sjn	this
+lang/art/xex	this
+lang/azc/nci	this
+lang/bat/lt	this
+lang/bat/ltg	this
+lang/bat/lv	this
+lang/bnt/sw	this
+lang/bnt/tn	this
+lang/ccs/ka	this
+lang/cel/cy	this
+lang/cel/ga	this
+lang/cel/gd	this
+lang/cus/om	this
+lang/dra/kn	this
+lang/dra/ml	this
+lang/dra/ta	this
+lang/dra/te	this
+lang/esx/kl	this
+lang/eu	this
+lang/gmq/da	this
+lang/gmq/is	this
+lang/gmq/nb	this
+lang/gmq/sv	1.52.0
+lang/gmw/af	this
+lang/gmw/de	this
+lang/gmw/en	this
+lang/gmw/en-029	this
+lang/gmw/en-GB-scotland	this
+lang/gmw/en-GB-x-gbclan	this
+lang/gmw/en-GB-x-gbcwmd	this
+lang/gmw/en-GB-x-rp	this
+lang/gmw/en-Shaw	this
+lang/gmw/en-US	this
+lang/gmw/en-US-nyc	this
+lang/gmw/lb	this
+lang/gmw/nl	this
+lang/grk/el	this
+lang/grk/grc	this
+lang/inc/as	this
+lang/inc/bn	this
+lang/inc/bpy	this
+lang/inc/gu	this
+lang/inc/hi	this
+lang/inc/kok	this
+lang/inc/mr	this
+lang/inc/ne	this
+lang/inc/or	this
+lang/inc/pa	this
+lang/inc/sd	this
+lang/inc/si	this
+lang/inc/ur	this
+lang/ine/hy	this
+lang/ine/hyw	this
+lang/ine/sq	this
+lang/ira/fa	this
+lang/ira/fa-Latn	this
+lang/ira/ku	this
+lang/iro/chr	this
+lang/itc/la	this
+lang/jpx/ja	this
+lang/ko	this
+lang/map/haw	this
+lang/miz/mto	this
+lang/myn/quc	this
+lang/poz/id	this
+lang/poz/mi	this
+lang/poz/ms	this
+lang/qu	this
+lang/roa/an	this
+lang/roa/ca	this
+lang/roa/ca-ba	this
+lang/roa/ca-nw	this
+lang/roa/ca-va	this
+lang/roa/es	this
+lang/roa/es-419	this
+lang/roa/fr	this
+lang/roa/fr-BE	this
+lang/roa/fr-CH	this
+lang/roa/ht	this
+lang/roa/it	this
+lang/roa/pap	this
+lang/roa/pt	this
+lang/roa/pt-BR	1.52.0
+lang/roa/ro	this
+lang/sai/gn	this
+lang/sem/am	this
+lang/sem/ar	this
+lang/sem/he	this
+lang/sem/mt	this
+lang/sem/ti	this
+lang/sit/cmn	this
+lang/sit/cmn-Latn-pinyin	this
+lang/sit/hak	this
+lang/sit/my	this
+lang/sit/yue	this
+lang/sit/yue-Latn-jyutping	this
+lang/tai/shn	this
+lang/tai/th	this
+lang/trk/az	this
+lang/trk/ba	this
+lang/trk/cv	this
+lang/trk/kaa	this
+lang/trk/kk	this
+lang/trk/ky	this
+lang/trk/nog	this
+lang/trk/tk	this
+lang/trk/tr	this
+lang/trk/tt	this
+lang/trk/ug	this
+lang/trk/uz	this
+lang/urj/et	this
+lang/urj/fi	this
+lang/urj/hu	this
+lang/urj/smj	this
+lang/zle/be	this
+lang/zle/ru	this
+lang/zle/ru-LV	this
+lang/zle/ru-cl	1.52.0
+lang/zle/uk	this
+lang/zls/bg	this
+lang/zls/bs	this
+lang/zls/hr	this
+lang/zls/mk	this
+lang/zls/sl	this
+lang/zls/sr	this
+lang/zlw/cs	this
+lang/zlw/pl	this
+lang/zlw/sk	this
+lb_dict	dict compiler=this source=this
+lfn_dict	dict compiler=this source=this
+lt_dict	dict compiler=this source=this
+lv_dict	dict compiler=this source=this
+mi_dict	dict compiler=this source=this
+mk_dict	dict compiler=this source=this
+ml_dict	dict compiler=this source=this
+mr_dict	dict compiler=this source=this
+ms_dict	dict compiler=this source=this
+mt_dict	dict compiler=this source=this
+mto_dict	dict compiler=this source=this
+my_dict	dict compiler=1.52.0 source=this
+nci_dict	dict compiler=this source=this
+ne_dict	dict compiler=this source=this
+nl_dict	dict compiler=this source=this
+no_dict	dict compiler=this source=this
+nog_dict	dict compiler=this source=this
+om_dict	dict compiler=this source=this
+or_dict	dict compiler=this source=this
+pa_dict	dict compiler=this source=this
+pap_dict	dict compiler=this source=this
+phondata	1.52.0+hindi
+phondata-manifest	1.52.0+hindi
+phonindex	1.52.0+hindi
+phontab	1.52.0
+piqd_dict	dict compiler=this source=this
+pl_dict	dict compiler=this source=this
+pt_dict	dict compiler=this source=1.52.0 emoji=this
+py_dict	dict compiler=this source=this
+qdb_dict	dict compiler=this source=this
+qu_dict	dict compiler=1.52.0 source=this
+quc_dict	dict compiler=this source=this
+qya_dict	dict compiler=this source=this
+ro_dict	dict compiler=this source=this
+ru_dict	dict compiler=this source=1.52.0 emoji=redzoc-data no-extra
+sd_dict	dict compiler=1.52.0 source=this
+shn_dict	dict compiler=1.52.0 source=this
+si_dict	dict compiler=1.52.0 source=this
+sjn_dict	dict compiler=this source=this
+sk_dict	dict compiler=this source=this
+sl_dict	dict compiler=this source=1.52.0 emoji=this
+smj_dict	dict compiler=this source=this
+sq_dict	dict compiler=this source=this
+sr_dict	dict compiler=this source=this
+sv_dict	dict compiler=this source=1.52.0 emoji=this
+sw_dict	dict compiler=this source=this
+ta_dict	dict compiler=this source=this
+te_dict	dict compiler=this source=this
+th_dict	upstream-android-1.52.0
+ti_dict	dict compiler=this source=this
+tk_dict	dict compiler=this source=this
+tn_dict	dict compiler=this source=this
+tr_dict	dict compiler=this source=this
+tt_dict	dict compiler=this source=this
+ug_dict	dict compiler=this source=this
+uk_dict	dict compiler=this source=this
+ur_dict	dict compiler=1.52.0 source=this
+uz_dict	dict compiler=this source=this
+vi_dict	dict compiler=1.52.0 source=this
+voices/!v/Alex	this
+voices/!v/Alicia	1.52.0
+voices/!v/Andrea	this
+voices/!v/Andy	1.52.0
+voices/!v/Annie	1.52.0
+voices/!v/AnxiousAndy	1.52.0
+voices/!v/Demonic	1.52.0
+voices/!v/Denis	1.52.0
+voices/!v/Diogo	this
+voices/!v/Gene	1.52.0
+voices/!v/Gene2	1.52.0
+voices/!v/Henrique	this
+voices/!v/Hugo	this
+voices/!v/Jacky	1.52.0
+voices/!v/Lee	1.52.0
+voices/!v/Marco	1.52.0
+voices/!v/Mario	1.52.0
+voices/!v/Michael	1.52.0
+voices/!v/Mike	this
+voices/!v/Mr serious	1.52.0
+voices/!v/Nguyen	this
+voices/!v/Reed	this
+voices/!v/RicishayMax	this
+voices/!v/RicishayMax2	this
+voices/!v/RicishayMax3	this
+voices/!v/Storm	1.52.0
+voices/!v/Tweaky	1.52.0
+voices/!v/UniRobot	1.52.0
+voices/!v/adam	this
+voices/!v/anika	this
+voices/!v/anikaRobot	this
+voices/!v/announcer	this
+voices/!v/antonio	this
+voices/!v/aunty	1.52.0
+voices/!v/belinda	this
+voices/!v/benjamin	this
+voices/!v/boris	1.52.0
+voices/!v/caleb	this
+voices/!v/croak	this
+voices/!v/david	this
+voices/!v/ed	this
+voices/!v/edward	this
+voices/!v/edward2	this
+voices/!v/f1	this
+voices/!v/f2	this
+voices/!v/f3	this
+voices/!v/f4	this
+voices/!v/f5	this
+voices/!v/fast	this
+voices/!v/grandma	this
+voices/!v/grandpa	this
+voices/!v/gustave	this
+voices/!v/ian	1.52.0
+voices/!v/iven	this
+voices/!v/iven2	this
+voices/!v/iven3	this
+voices/!v/iven4	this
+voices/!v/john	1.52.0
+voices/!v/kaukovalta	1.52.0
+voices/!v/klatt	this
+voices/!v/klatt2	this
+voices/!v/klatt3	this
+voices/!v/klatt4	this
+voices/!v/klatt5	this
+voices/!v/klatt6	this
+voices/!v/linda	this
+voices/!v/m1	this
+voices/!v/m2	this
+voices/!v/m3	this
+voices/!v/m4	this
+voices/!v/m5	this
+voices/!v/m6	this
+voices/!v/m7	this
+voices/!v/m8	this
+voices/!v/marcelo	this
+voices/!v/max	1.52.0
+voices/!v/michel	1.52.0
+voices/!v/miguel	this
+voices/!v/mike2	this
+voices/!v/norbert	1.52.0
+voices/!v/pablo	this
+voices/!v/paul	this
+voices/!v/pedro	this
+voices/!v/quincy	1.52.0
+voices/!v/rob	1.52.0
+voices/!v/robert	1.52.0
+voices/!v/robosoft	this
+voices/!v/robosoft2	this
+voices/!v/robosoft3	this
+voices/!v/robosoft4	this
+voices/!v/robosoft5	this
+voices/!v/robosoft6	this
+voices/!v/robosoft7	this
+voices/!v/robosoft8	this
+voices/!v/sandro	this
+voices/!v/shelby	this
+voices/!v/steph	this
+voices/!v/steph2	this
+voices/!v/steph3	this
+voices/!v/travis	1.52.0
+voices/!v/victor	this
+voices/!v/whisper	this
+voices/!v/whisperf	this
+voices/!v/zac	1.52.0
+xex_dict	dict compiler=this source=this
+yue_dict	dict compiler=this source=this

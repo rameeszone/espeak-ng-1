@@ -112,7 +112,7 @@ static int SynthCallback(short *audioData, int numSamples,
 
   if (audioData == NULL) {
     // The end of the text: eSpeak passes no buffer at all.
-    (*env)->CallVoidMethod(env, object, METHOD_nativeSynthCallback, NULL);
+    (*env)->CallBooleanMethod(env, object, METHOD_nativeSynthCallback, NULL);
     return SYNTH_ABORT;
   } else if (numSamples < 1) {
     // An empty chunk in the middle of the text, for example after a line
@@ -122,8 +122,11 @@ static int SynthCallback(short *audioData, int numSamples,
   } else {
     jbyteArray arrayAudioData = (*env)->NewByteArray(env, numSamples * 2);
     (*env)->SetByteArrayRegion(env, arrayAudioData, 0, (numSamples * 2), (jbyte *) audioData);
-    (*env)->CallVoidMethod(env, object, METHOD_nativeSynthCallback, arrayAudioData);
-    return SYNTH_CONTINUE;
+    // The Java side answers false when this request was stopped (Android
+    // refused its audio). Returning SYNTH_ABORT makes eSpeak stop by itself,
+    // here on the speech thread (RedZoc, November 2026; see nativeStop).
+    const jboolean keepGoing = (*env)->CallBooleanMethod(env, object, METHOD_nativeSynthCallback, arrayAudioData);
+    return keepGoing ? SYNTH_CONTINUE : SYNTH_ABORT;
   }
 }
 
@@ -148,7 +151,7 @@ JNIEXPORT jboolean
 JNICALL Java_com_redzoc_ramees_tts_espeak_SpeechSynthesis_nativeClassInit(
     JNIEnv* env, jclass clazz) {
   if (DEBUG) LOGV("%s", __FUNCTION__);
-  METHOD_nativeSynthCallback = (*env)->GetMethodID(env, clazz, "nativeSynthCallback", "([B)V");
+  METHOD_nativeSynthCallback = (*env)->GetMethodID(env, clazz, "nativeSynthCallback", "([B)Z");
 
   return JNI_TRUE;
 }
@@ -308,6 +311,18 @@ JNICALL Java_com_redzoc_ramees_tts_espeak_SpeechSynthesis_nativeSetPunctuationCh
   return JNI_FALSE;
 }
 
+// RedZoc (November 2026, decision 32): the language for Devanagari words in a
+// voice that does not use Devanagari, from "Language for Devanagari letters".
+// "" keeps eSpeak's default (Hindi).
+JNIEXPORT void
+JNICALL Java_com_redzoc_ramees_tts_espeak_SpeechSynthesis_nativeSetDevanagariLanguage(
+    JNIEnv *env, jobject object, jstring language) {
+  if (DEBUG) LOGV("%s", __FUNCTION__);
+  const char *c_language = language ? (*env)->GetStringUTFChars(env, language, NULL) : NULL;
+  espeak_SetDevanagariLanguage(c_language);
+  if (c_language) (*env)->ReleaseStringUTFChars(env, language, c_language);
+}
+
 JNIEXPORT jboolean
 JNICALL Java_com_redzoc_ramees_tts_espeak_SpeechSynthesis_nativeSynthesize(
     JNIEnv *env, jobject object, jstring text, jboolean isSsml) {
@@ -339,7 +354,14 @@ JNIEXPORT jboolean
 JNICALL Java_com_redzoc_ramees_tts_espeak_SpeechSynthesis_nativeStop(
     JNIEnv *env, jobject object) {
   if (DEBUG) LOGV("%s", __FUNCTION__);
-  espeak_Cancel();
+  // No espeak_Cancel() here (RedZoc, November 2026). Android calls stop on a
+  // different thread from the one speaking, and in this build (no async
+  // mode) espeak_Cancel doesn't stop speech: it re-applies every setting,
+  // and changing the rate writes into eSpeak's wave command queue while the
+  // speech thread is using it. A voice change in the queue was then played
+  // and freed twice: the WavegenFill crash. Speech now stops on the speech
+  // thread instead, when SynthCallback returns SYNTH_ABORT.
+  // docs/audits/espeak-crash-wavegenfill-2026-11.md (workspace).
 
   return JNI_TRUE;
 }

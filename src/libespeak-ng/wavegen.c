@@ -236,6 +236,17 @@ static const unsigned char pitch_adjust_tab[MAX_PITCH_VALUE+1] = {
 
 void WcmdqStop(void)
 {
+	// Free the copies still waiting in the queue: a voice change (DoVoiceChange) and a
+	// phoneme alignment (DoPhonemeAlignment) own memory that WavegenFill2 frees when it
+	// plays them. Speech stopped early never plays them.
+	while (wcmdq_head != wcmdq_tail) {
+		intptr_t *q = wcmdq[wcmdq_head];
+		if ((q[0] & 0xff) == WCMD_VOICE)
+			free((voice_t *)q[2]);
+		else if ((q[0] & 0xff) == WCMD_PHONEME_ALIGNMENT)
+			free((char *)q[1]);
+		if (++wcmdq_head >= N_WCMDQ) wcmdq_head = 0;
+	}
 	wcmdq_head = 0;
 	wcmdq_tail = 0;
 
